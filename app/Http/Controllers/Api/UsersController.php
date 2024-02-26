@@ -8,8 +8,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-
-
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
+use LDAP\Result;
 
 class UsersController extends Controller
 {
@@ -20,23 +21,30 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
-        $list = DB::table('esk_apidb.f_link_master')->get();
-        $userList = [];
-        foreach ($list as $li) {
-            $userList[] = array(
-                'linkId' => $li->intLinkId,
-                'linkName' => $li->vchLinkName,
-                'slugName' => $li->vchSlugName,
-                'className' => $li->vchClassName,
-                'serialNo' => $li->intSerialNo,
-                'publishStatus' => $li->tinPublishStatus,
-                'linkType' => $li->vchLinkType,
-                'microServiceName' => $li->vchMicroServiceName,
-                'controllerName' => $li->vchControllerName,
-                'createdOn' => date('d-M-Y h:i a', strtotime($li->stmCreatedOn))
-            );
+        $userList = Redis::get('user_list');
+        if (!$userList) {
+            $list = DB::table('esk_apidb.f_link_master')->get();
+            $userList = [];
+            foreach ($list as $li) {
+                $userList[] = array(
+                    'linkId' => $li->intLinkId,
+                    'linkName' => $li->vchLinkName,
+                    'slugName' => $li->vchSlugName,
+                    'className' => $li->vchClassName,
+                    'serialNo' => $li->intSerialNo,
+                    'publishStatus' => $li->tinPublishStatus,
+                    'linkType' => $li->vchLinkType,
+                    'microServiceName' => $li->vchMicroServiceName,
+                    'controllerName' => $li->vchControllerName,
+                    'createdOn' => date('d-M-Y h:i a', strtotime($li->stmCreatedOn))
+                );
+            }
+
+            Redis::set('user_list', json_encode($userList));
+        } else {
+            $userList = json_decode($userList, true);
         }
+
         return $userList;
     }
 
@@ -57,38 +65,51 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $req)
+    public function show(Request $request)
     {
-
         $status = false;
         $msg = "";
         $accessToken = "";
         $expireIn = time();
-        $id = $req->input('email');
-        try {
-            $user = DB::table('esk_apidb.users')->where('email', $id)->first();
-
-            if ($user) {
-                if (Hash::check($req->input('password'), $user->password)) {
-                    $status = true;
-                    $msg = "Login success";
-                    $accessToken = Crypt::encryptString($id);
-                    $expireIn = time();
-                } else {
-                    $msg = "Incorrect Password";
-                }
+        if (Redis::exists('loginData_' . $request['email'] . '')) {
+            $uData =  Redis::get('loginData_' . $request['email'] . '');
+        } else {
+            $query = DB::table('esk_apidb.users')
+                ->where('email', $request['email'])
+                ->get();
+            if ($query->isNotEmpty()) {
+                Redis::set('loginData_' . $request['email'] . '', $query);
+                $uData =  Redis::get('loginData_' . $request['email'] . '');
             } else {
+
+                $status = false;
                 $msg = "User not found";
+                return response()->json([
+                    'status' => $status,
+                    'msg' => $msg,
+                    // 'accessToken' => $accessToken,
+                    'expireIn' => $expireIn
+                ]);
             }
-        } catch (\Exception $e) {
-            $msg = "An error occurred: " . $e->getMessage();
         }
 
+        $uData = collect(json_decode($uData))[0];
+
+        if (Hash::check($request['password'],  $uData->password)) {
+            $status = true;
+            $msg = "Login success";
+            $accessToken = Crypt::encryptString($request['email']);
+            $expireIn = time();
+        } else {
+            $msg = "Incorrect Password";
+        }
+        $linkData = $this->index();
         return response()->json([
             'status' => $status,
             'msg' => $msg,
             'accessToken' => $accessToken,
-            'expireIn' => $expireIn
+            'expireIn' => $expireIn,
+            'linkData' => $linkData
         ]);
     }
 
