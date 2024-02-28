@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UsersController;
+use App\Http\Controllers\Api\InspectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::POST('/userLogin', [UsersController::class, 'show']);
 Route::get('/user', [UsersController::class, 'index']);
+Route::get('/getDistrict', [InspectionController::class, 'getDistrict']);
+Route::get('/getBlock/{id}', [InspectionController::class, 'getBlock']);
+Route::get('/getCluster/{id}', [InspectionController::class, 'getCluster']);
+Route::get('/getSchool/{id}', [InspectionController::class, 'getSchool']);
