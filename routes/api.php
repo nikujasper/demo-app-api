@@ -22,8 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::POST('/userLogin', [UsersController::class, 'show']);
 Route::get('/user', [UsersController::class, 'index']);
 Route::get('/getDistrict', [InspectionController::class, 'getDistrict']);
-Route::get('/getBlock/{id}', [InspectionController::class, 'getBlock']);
-Route::get('/getCluster/{id}', [InspectionController::class, 'getCluster']);
-// Route::post('/getSchool', [InspectionController::class, 'getSchool']);
-Route::get('/getSchool/{id}', [InspectionController::class, 'getSchool']);
+Route::post('/getBlock', [InspectionController::class, 'getBlock']);
+Route::post('/getCluster', [InspectionController::class, 'getCluster']);
+Route::post('/getSchool', [InspectionController::class, 'getSchool']);
 Route::post('/storeInspection', [InspectionController::class, 'store']);
+
+
+Route::get('/show', [InspectionController::class, 'show']);

@@ -55,9 +55,11 @@ class InspectionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+
+        $cachedData = Redis::get('districtList');
+        return response()->json(json_decode($cachedData));
     }
 
     /**
@@ -102,7 +104,7 @@ class InspectionController extends Controller
 
     public function getBlock(Request $request)
     {
-        $cacheKey = 'district_' . $request->id;
+        $cacheKey = 'district_' . $request['id'];
         $cachedData = Redis::get($cacheKey);
         // Check if the data exists in Redis cache
         if ($cachedData) {
@@ -120,7 +122,7 @@ class InspectionController extends Controller
 
     public function getCluster(Request $request)
     {
-        $cacheKey = 'block_' . $request->id;
+        $cacheKey = 'block_' . $request['id'];
         $cacheData = Redis::get($cacheKey);
         // Check if the data exists in Redis cache
         if ($cacheData) {
@@ -139,7 +141,7 @@ class InspectionController extends Controller
     public function getSchool(Request $request)
     {
         //creating key of Redis cache
-        $cacheKey = 'cluster_' . $request->id;
+        $cacheKey = 'cluster_' . $request['id'];
         $cacheData = Redis::get($cacheKey);
         // Check if the data exists in Redis cache
         if ($cacheData) {
