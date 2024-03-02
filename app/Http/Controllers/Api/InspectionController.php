@@ -55,11 +55,9 @@ class InspectionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-
-        $cachedData = Redis::get('districtList');
-        return response()->json(json_decode($cachedData));
+        //
     }
 
     /**
