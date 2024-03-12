@@ -26,3 +26,6 @@ Route::post('/getBlock', [InspectionController::class, 'getBlock']);
 Route::post('/getCluster', [InspectionController::class, 'getCluster']);
 Route::post('/getSchool', [InspectionController::class, 'getSchool']);
 Route::post('/storeInspection', [InspectionController::class, 'store']);
+
+
+Route::get('/queue', [InspectionController::class, 'que']);

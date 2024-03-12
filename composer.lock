@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5ff4f0360345cf7dfd3b31dd3b85cdbb",
+    "content-hash": "8b6a3682fbddbfa1806588a73e6e1b91",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2285,6 +2285,59 @@
                 }
             ],
             "time": "2023-11-12T21:59:55+00:00"
+        },
+        {
+            "name": "phppackageauthor/phppackagename",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/midweste/phppackage.git",
+                "reference": "21b89cff6774fc63be434ba22a93bda4793ddfcf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/midweste/phppackage/zipball/21b89cff6774fc63be434ba22a93bda4793ddfcf",
+                "reference": "21b89cff6774fc63be434ba22a93bda4793ddfcf",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3"
+            },
+            "require-dev": {
+                "infection/infection": "^0.16.3",
+                "phing/phing": "^2.16",
+                "phpunit/phpunit": "^9.2",
+                "squizlabs/php_codesniffer": "^3.2.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpPackageNamespace\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "phppackageauthor",
+                    "role": "Developer"
+                }
+            ],
+            "description": "phppackagedescription",
+            "homepage": "https://github.com/phppackageauthor/phppackagename",
+            "keywords": [
+                "boilerplate",
+                "php",
+                "phppackagename"
+            ],
+            "support": {
+                "issues": "https://github.com/midweste/phppackage/issues",
+                "source": "https://github.com/midweste/phppackage/tree/master"
+            },
+            "time": "2020-10-03T10:51:13+00:00"
         },
         {
             "name": "predis/predis",

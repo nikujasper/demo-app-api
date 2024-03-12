@@ -53,7 +53,12 @@ return [
             'channels' => ['single'],
             'ignore_exceptions' => false,
         ],
-
+        'customlog' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/queueLog.log'),
+            // 'level' => 'info',
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),

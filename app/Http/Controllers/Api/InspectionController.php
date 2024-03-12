@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 use LDAP\Result;
+use App\Jobs\ProcessPodcast;
+use Illuminate\Support\Facades\Log;
+
 
 
 class InspectionController extends Controller
@@ -150,5 +153,26 @@ class InspectionController extends Controller
         $list = DB::table('esk_school.school')->where('clusterId', $clusterId)->get();
         Redis::set($cacheKey, json_encode($list));
         return response()->json($list);
+    }
+
+    public function que()
+    {
+        $a = "vivek";
+        // Log::info('This is test log');
+
+        // return response()->json($a);
+
+        // ProcessPodcast::dispatch($a);
+        dispatch(new ProcessPodcast($a));
+        return "data dispatch successfully";
+    }
+
+    public function test($r)
+    {
+
+        Log::channel('customlog')->info('Queue Executed Successfully');
+        sleep(10);
+
+        dd($r);
     }
 }
