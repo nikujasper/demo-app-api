@@ -88,7 +88,7 @@ class UsersController extends Controller
                     'status' => $status,
                     'msg' => $msg,
                     // 'accessToken' => $accessToken,
-                    'expireIn' => $expireIn
+                    // 'expireIn' => $expireIn
                 ]);
             }
         }
