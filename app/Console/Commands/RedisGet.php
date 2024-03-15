@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\RabbitMQController;
 
-class TestCommand extends Command
+class RedisGet extends Command
 {
     // protected $signature = 'rabbit:consume';
     protected $signature = 'redis:get{key}';
