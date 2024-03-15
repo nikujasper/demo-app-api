@@ -169,7 +169,6 @@ class InspectionController extends Controller
 
     public function test($r)
     {
-
         // Log::channel('customlog')->info('Queue Executed Successfully');
         // sleep(5);
         DB::table('esk_apidb.version')->update([

@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\InspectionController;
-
+use App\Http\Controllers\RabbitMQController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,3 +29,7 @@ Route::post('/storeInspection', [InspectionController::class, 'store']);
 
 
 Route::get('/queue', [InspectionController::class, 'que']);
+
+
+Route::post('/publish', [RabbitMQController::class, 'publishMessage']);
+Route::get('/consume', [RabbitMQController::class, 'consumeMessage']);
